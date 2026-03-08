@@ -2,7 +2,9 @@
 
 // Represente o Tabuleiro: Utilize uma matriz 10x10.
 // Inicialize todas as posições do tabuleiro com o valor 0, representando água.
-// Posicione 2 Navios: Declare e inicialize dois vetores (arrays) para representar os navios.
+// Posicione 1 navio veretical.
+// Posicione 1 navio horizontal.
+// Posicione 2 navios na diagonal.
 // Cada navio ocupará um número fixo de 3 posições no tabuleiro.
 // Você deverá escolher as coordenadas iniciais de cada navio e garantir que eles estejam completamente dentro dos limites do tabuleiro e não se sobreponham.
 // Exiba o Tabuleiro: Utilize loops aninhados e o comando printf para exibir o tabuleiro no console.
@@ -11,9 +13,11 @@
 int main()
 {
 
-    int tabuleiro[10][10] = {0};
-    int navioH[] = {2, 5, 2, 6, 2, 7};
-    int navioV[] = {5, 8, 6, 8, 7, 8};
+    int tabuleiro[10][10] = {0};        // Tabuleiro com matriz 10x10
+    int navioH[] = {0, 5, 0, 6, 0, 7};  // Navio horizontal
+    int navioV[] = {5, 8, 6, 8, 7, 8};  // Navio veretical
+    int navioD1[] = {1, 1, 2, 2, 3, 3}; // Navios na diagonal
+    int navioD2[] = {2, 7, 3, 6, 4, 5}; // Navios na diagonal
     int total_elementos = 6;
 
     // Preenchendo o tabuleiro com o vetor
@@ -29,9 +33,22 @@ int main()
         int c = navioV[i + 1]; // Coluna
         tabuleiro[l][c] = 3;
     }
+    for (int i = 0; i < total_elementos; i += 2)
+    {
+        int l = navioD1[i];     // Linha
+        int c = navioD1[i + 1]; // Coluna
+        tabuleiro[l][c] = 3;
+    }
+
+    for (int i = 0; i < total_elementos; i += 2)
+    {
+        int l = navioD2[i];     // Linha
+        int c = navioD2[i + 1]; // Coluna
+        tabuleiro[l][c] = 3;
+    }
 
     printf("Batalha Naval:\n");
-    
+
     // Impressão do Tabuleiro
     printf("   A B C D E F G H I J\n");
     for (int i = 0; i < 10; i++)
