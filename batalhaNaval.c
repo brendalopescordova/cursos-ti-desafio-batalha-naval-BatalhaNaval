@@ -1,27 +1,23 @@
 #include <stdio.h>
 
-// Represente o Tabuleiro: Utilize uma matriz 10x10.
-// Inicialize todas as posições do tabuleiro com o valor 0, representando água.
-// Posicione 1 navio veretical.
-// Posicione 1 navio horizontal.
-// Posicione 2 navios na diagonal.
-// Cada navio ocupará um número fixo de 3 posições no tabuleiro.
-// Você deverá escolher as coordenadas iniciais de cada navio e garantir que eles estejam completamente dentro dos limites do tabuleiro e não se sobreponham.
-// Exiba o Tabuleiro: Utilize loops aninhados e o comando printf para exibir o tabuleiro no console.
-// Mostre a matriz completa, com 0s representando água e 3s representando as partes dos navios.
+// Tabuleiro 10x10.
+// Criar 3 matrizes de habilidade separadas, cone, cruz e octaedro.
+// 
 
 int main()
 {
+    // Declaração da matriz do tabuleiro principal
+    int tabuleiro[10][10] = {0};
 
-    int tabuleiro[10][10] = {0};        // Tabuleiro com matriz 10x10
+    // Declaração das matrizes de habilidade
+    int cone[3][5] = {0};
+    int cruz[3][5] = {0};
+    int octaedro[3][5] = {0};
     int navioH[] = {0, 5, 0, 6, 0, 7};  // Navio horizontal
-    int navioV[] = {5, 8, 6, 8, 7, 8};  // Navio veretical
-    int navioD1[] = {1, 1, 2, 2, 3, 3}; // Navios na diagonal
-    int navioD2[] = {2, 7, 3, 6, 4, 5}; // Navios na diagonal
+    int navioV[] = {5, 1, 6, 1, 7, 1};  // Navio veretical
     int total_elementos = 6;
 
-    // Preenchendo o tabuleiro com o vetor
-    for (int i = 0; i < total_elementos; i += 2)
+     for (int i = 0; i < total_elementos; i += 2)
     {
         int l = navioH[i];     // Linha
         int c = navioH[i + 1]; // Coluna
@@ -33,27 +29,87 @@ int main()
         int c = navioV[i + 1]; // Coluna
         tabuleiro[l][c] = 3;
     }
-    for (int i = 0; i < total_elementos; i += 2)
+
+    for (int i = 0; i < 3; i++)
     {
-        int l = navioD1[i];     // Linha
-        int c = navioD1[i + 1]; // Coluna
-        tabuleiro[l][c] = 3;
+        for (int j = 0; j < 5; j++)
+        {
+            // CONE
+            if (j >= 2 - i && j <= 2 + i)
+            {
+                cone[i][j] = 1;
+            }
+
+            // CRUZ
+            if (i == 1 || j == 2)
+            {
+                cruz[i][j] = 1;
+            }
+
+            // OCTAEDRO
+            if ((i == 0 && j == 2) || (i == 1 && j >= 1 && j <= 3) || (i == 2 && j == 2))
+            {
+                octaedro[i][j] = 1;
+            }
+        }
     }
 
-    for (int i = 0; i < total_elementos; i += 2)
-    {
-        int l = navioD2[i];     // Linha
-        int c = navioD2[i + 1]; // Coluna
-        tabuleiro[l][c] = 3;
-    }
+    // Integrando habilidades ao tabuleiro principal
+    int coneL = 0, coneC = 2; // Ponto de origem: Topo do cone
+    int cruzL = 5, cruzC = 5; // Ponto de origem: Centro da cruz
+    int octL = 8, octC = 8;   // Ponto de origem: Centro do octaedro
 
-    printf("Batalha Naval:\n");
+    // Pintando tabuleiro principal com as matrizes de habilidade
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 5; j++)
+        {
+            // Aplicando CONE
+            if (cone[i][j] == 1)
+            {
+                int linha = coneL + i;
+                int coluna = coneC + (j - 2);
+
+                if (linha >= 0 && linha < 10 && coluna >= 0 && coluna < 10)
+                {
+                    tabuleiro[linha][coluna] = 1;
+                }
+            }
+
+            // Aplicando CRUZ
+            if (cruz[i][j] == 1)
+            {
+                int linha = cruzL + (i - 1);
+                int coluna = cruzC + (j - 2);
+
+                if (linha >= 0 && linha < 10 && coluna >= 0 && coluna < 10)
+                {
+                    tabuleiro[linha][coluna] = 1;
+                }
+            }
+
+            // Aplicando OCTAEDRO
+            if (octaedro[i][j] == 1)
+            {
+                int linha = octL + (i - 1);
+                int coluna = octC + (j - 2);
+
+                if (linha >= 0 && linha < 10 && coluna >= 0 && coluna < 10)
+                {
+                    tabuleiro[linha][coluna] = 1;
+                }
+            }
+        }
+    }
 
     // Impressão do Tabuleiro
-    printf("   A B C D E F G H I J\n");
+    printf("Batalha Naval:\n\n");
+    printf("    A B C D E F G H I J\n");
+
     for (int i = 0; i < 10; i++)
     {
-        printf("%2d ", i + 1);
+        printf("%2d  ", i + 1);
+
         for (int j = 0; j < 10; j++)
         {
             printf("%d ", tabuleiro[i][j]);
